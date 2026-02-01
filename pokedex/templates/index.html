@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>Lista de Pokemons</h3>
+<a href="{% url 'pokedex:add_pokemon' %}" class="btn btn-success mb-3">Añadir Pokemon</a>
+
+<div class="row">
+    {% for pokemon in pokemons %}
+    <div class="col-12 col-md-6 col-lg-3 p-1">
+        <div class="card h-100" style="width: 15rem;">
+            <img src="{{ pokemon.picture.url }}" class="card-img-top" alt="{{ pokemon.name }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ pokemon.name }}</h5>
+                <p class="card-text">Tipo: {{ pokemon.type }}</p>
+                <a href="{{ pokemon.id }}" class="btn btn-primary">
+                    <i class="fa-solid fa-eye"></i> Ver detalles
+                </a>
+                <a href="edit_pokemon/{{ pokemon.id }}" class="btn btn-warning">
+                    <i class="fa-solid fa-pen-to-square"></i> Editar
+                </a>
+                <a href="delete_pokemon/{{ pokemon.id }}" class="btn btn-danger">
+                    <i class="fa-solid fa-trash"></i> Eliminar
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<hr>
+
+<h3>Lista de Entrenadores</h3>
+<a href="{% url 'pokedex:add_entrenador' %}" class="btn btn-success mb-3">Añadir Entrenador</a>
+
+<div class="row">
+    {% for entrenador in entrenadores %}
+    <div class="col-12 col-md-6 col-lg-3 p-1">
+        <div class="card h-100" style="width: 15rem;">
+            {% if entrenador.picture %}
+                <img src="{{ entrenador.picture.url }}" class="card-img-top" alt="{{ entrenador.name }}">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ entrenador.name }}</h5>
+                <p class="card-text">Edad: {{ entrenador.age }}</p>
+                <p class="card-text">Ciudad: {{ entrenador.city }}</p>
+                <p class="card-text">Especialidad: {{ entrenador.specialty }}</p>
+
+                <a href="{% url 'pokedex:entrenador' entrenador.id %}" class="btn btn-primary">
+                    <i class="fa-solid fa-eye"></i> Ver detalles
+                </a>
+                <a href="{% url 'pokedex:edit_entrenador' entrenador.id %}" class="btn btn-warning">
+                    <i class="fa-solid fa-pen-to-square"></i> Editar
+                </a>
+                <a href="{% url 'pokedex:delete_entrenador' entrenador.id %}" class="btn btn-danger">
+                    <i class="fa-solid fa-trash"></i> Eliminar
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}
