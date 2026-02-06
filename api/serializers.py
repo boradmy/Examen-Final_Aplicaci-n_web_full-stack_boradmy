@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from pokedex.models import Pokemon, EntrenadorPokemon
+from movies.models import Pokemon, EntrenadorPokemon
 from django.core.files.base import ContentFile
 import base64
 

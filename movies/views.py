@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.template import loader
 from .models import Pokemon, EntrenadorPokemon   # ← usa el nombre actualizado del modelo
-from pokedex.forms import PokemonForm, EntrenadorPokemonForm
+from movies.forms import PokemonForm, EntrenadorPokemonForm
 from django.shortcuts import redirect, render
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required

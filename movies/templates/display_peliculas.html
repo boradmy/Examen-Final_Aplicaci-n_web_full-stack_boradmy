@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <p>
+    Has elegido la película:
+    <strong>{{ pelicula.name|capfirst }}</strong>
+  </p>
+
+  <h3>Detalles de la película</h3>
+
+  <ul>
+    <li><strong>ID:</strong> {{ pelicula.id }}</li>
+    <li><strong>Título:</strong> {{ pelicula.name|capfirst }}</li>
+    <li><strong>Género:</strong> {{ pelicula.type|capfirst }}</li>
+    <li><strong>Duración:</strong> {{ pelicula.weight }}</li>
+    <li><strong>Año:</strong> {{ pelicula.height }}</li>
+  </ul>
+{% endblock content %}

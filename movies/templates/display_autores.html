@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>{{ autor.name }}</h2>
+
+  <p><strong>Edad:</strong> {{ autor.age }}</p>
+  <p><strong>Ciudad:</strong> {{ autor.city }}</p>
+  <p><strong>Especialidad:</strong> {{ autor.specialty }}</p>
+
+  {% if autor.picture %}
+    <img
+      src="{{ autor.picture.url }}"
+      alt="Imagen de {{ autor.name }}"
+      class="img-fluid mb-3"
+    >
+  {% endif %}
+
+  <h3>Obras del autor</h3>
+  <ul class="list-unstyled">
+    {% for pokemon in autor.pokemons.all %}
+      <li class="mb-2">
+        <strong>{{ pokemon.name }}</strong> ({{ pokemon.type }})
+        {% if pokemon.picture %}
+          <img
+            src="{{ pokemon.picture.url }}"
+            alt="{{ pokemon.name }}"
+            style="height:50px; margin-left:10px;"
+          >
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>No tiene obras asignadas.</li>
+    {% endfor %}
+  </ul>
+
+  <div class="mt-3">
+    <a href="{% url 'movies:edit_autor' autor.id %}" class="btn btn-warning">
+      <i class="fa-solid fa-pen-to-square"></i> Editar
+    </a>
+
+    <a href="{% url 'movies:delete_autor' autor.id %}" class="btn btn-danger">
+      <i class="fa-solid fa-trash"></i> Eliminar
+    </a>
+
+    <a href="{% url 'movies:index' %}" class="btn btn-secondary">
+      <i class="fa-solid fa-arrow-left"></i> Volver
+    </a>
+  </div>
+{% endblock %}

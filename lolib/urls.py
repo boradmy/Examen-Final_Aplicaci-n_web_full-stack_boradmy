@@ -1,5 +1,5 @@
 """
-URL configuration for pokedex project.
+URL configuration for lolib project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -22,12 +23,21 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # API
     path('api/', include('api.urls')),
+
+    # OAuth2
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+
+    # Auth
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('', include('pokedex.urls')),
+
+    # App principal
+    path('', include('movies.urls')),
 ]
 
+# Archivos media en desarrollo
 if settings.DEBUG:
     urlpatterns += static(
         settings.MEDIA_URL,

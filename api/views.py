@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from pokedex.models import Pokemon, EntrenadorPokemon
+from movies.models import Pokemon, EntrenadorPokemon
 from .serializers import PokemonSerializer, EntrenadorPokemonSerializer
 from oauth2_provider.contrib.rest_framework import OAuth2Authentication, TokenHasScope
 from rest_framework.permissions import IsAuthenticated, AllowAny

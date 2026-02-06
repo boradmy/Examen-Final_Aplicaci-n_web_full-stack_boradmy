@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Formulario de Película{% endblock title %}
+
+{% block content %}
+  <h2>Formulario de Película</h2>
+
+  <form action="" method="post" enctype="multipart/form-data" class="mt-3">
+      {% csrf_token %}
+
+      {{ form.as_div }}
+
+      <div class="mt-3">
+          <button type="submit" class="btn btn-primary">
+              Guardar
+          </button>
+
+          <a href="{% url 'movies:index' %}" class="btn btn-secondary">
+              Cancelar
+          </a>
+      </div>
+  </form>
+{% endblock content %}
