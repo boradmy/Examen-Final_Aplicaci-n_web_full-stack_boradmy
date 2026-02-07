@@ -1,247 +1,194 @@
-# Laboratorio 4. Taller Inicial de Django: Views, Templates y Modelos
+Proyecto Final: CatFlix Web Full-Stack
+Datos del estudiante
 
-Este laboratorio está diseñado para que los participantes puedan aprender y reforzar sus conocimientos de Python, HTML y CSS mediante la creación de una lista de Pokemones y una página de datalle. Utilizando como framework de desarrollo MVC a Django. De la misma manera se hará una introduccion a Bootstrap para el uso de librerías de Interfaz de usuario en HTML.
+Nombre: Boris Adrián Murillo Yajamín
 
-Por otra parte se aplica el uso de Modelos en Django y uso de bases de datos relacionales.
+Carrera: Ingeniería en Desarrollo de Software
 
-Además el estudiante aprenderá el manejo de Django desde los templates, views, models, así como la generación de API REST usando Django Rest Framework
+🎯 Objetivo
 
-## Datos del estudiante
-- **Nombre:** Boris Adrian Murillo Yajamin
-- **Carrera:** Ingenieria en desarrollo de software
+Desarrollar una aplicación web full-stack para manejar catálogos de películas y directores, integrando:
 
-## Objetivos 
-- El estudiante debe ser capaz de reconocer y aplicar conceptos básicos del Paradigma Orientado a Objetos (POO) como: Clases, Ojetos, Atributos, Métodos. Así mismo el presente proyecto introduce al desarrollo de aplicaciones Web mediante el uso de Django como marco de trabajo para el desarrollo.
-- El estudiante reforzará sus conocimientos de POO y manejo de bases de datos relacionales a través del uso de modelos en Django
-- El estudiante desarrollará backend con API REST
+Backend en Django como API REST
 
-## Tareas a realizar
-1. Generación de Modelos de Pokemon y Trainer
-2. Generación de migraciones.
-3. Despliegue de Pokemones en Templates lista y detalle
-4. Despliegue de Entrenadores en Templates lista y detalle
+Frontend en React
+
+Autenticación mediante OAuth 2.0
+
+El proyecto busca demostrar la integración de tecnologías aprendidas durante el curso y la capacidad de crear una aplicación funcional y segura.
+
+👥 Modalidad
+
+Trabajo individual o en parejas (2 personas)
+
+Reutilización de proyectos anteriores permitida solo si se adapta a los requisitos y se evidencia aplicación de los contenidos aprendidos.
+
+🛠️ Tecnologías utilizadas
+Parte	Tecnología
+Backend	Django + Django REST Framework
+Autenticación	OAuth 2.0 (Django OAuth Toolkit)
+Frontend	React + Axios
+UI	Bootstrap 5
+Base de datos	SQLite (desarrollo) / PostgreSQL (producción)
+Control de versiones	Git / GitHub
+Deployment	Local / Opcional: Heroku o Render
+📚 Descripción del Proyecto
+
+Aplicación para manejar películas y directores
+
+Relación uno a muchos: un director puede tener varias películas
+
+Funcionalidades principales:
+
+Listado de películas y directores
+
+Crear, editar y eliminar películas y directores
+
+Autenticación y autorización de usuarios mediante OAuth 2.0
+
+🔌 Requisitos del Backend (Django)
+
+API REST:
+
+No se renderizan vistas HTML, solo JSON
+
+Endpoints protegidos con OAuth 2.0
+
+CRUD completo para ambas entidades:
+
+GET → Listar / Detalle
+
+POST → Crear
+
+PUT / PATCH → Actualizar
+
+DELETE → Eliminar
+
+Modelos:
+
+class Director(models.Model):
+    nombre = models.CharField(max_length=100)
+    nacionalidad = models.CharField(max_length=50)
+    picture = models.ImageField(upload_to='directores/', blank=True, null=True)
+
+class Pelicula(models.Model):
+    titulo = models.CharField(max_length=100)
+    genero = models.CharField(max_length=50)
+    director = models.ForeignKey(Director, on_delete=models.CASCADE, related_name='peliculas')
+    picture = models.ImageField(upload_to='peliculas/', blank=True, null=True)
 
 
+Serializers
 
-## Instalación del ambiente
+class DirectorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Director
+        fields = '__all__'
 
-### Requerimientos
+class PeliculaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pelicula
+        fields = '__all__'
 
-- Python 3.10 o superior
-- PostgreSQL
-- Configurar el repositorio local
-    ~~~
-    git config --local user.name "[Nombre del estudiante]"
-    ~~~
-    ~~~
-    git config --local user.email "[Email de cuenta Github del estudiante]"
-    ~~~
 
-### Ubuntu Linux / MacOS
-Instalación de gestor de ambientes virtuales de Python
-~~~
-sudo apt install python3-venv
-~~~
-Creación del ambiente virtual
-~~~
-python3 -m venv .venv
-~~~
-Activación del ambiente virtual
-~~~
-source .venv/bin/activate
-~~~
-Instalación de dependencias de este proyecto
-~~~
-pip3 install -r requirements.txt
-~~~
-En caso de querer desactivar el ambiente usar
-~~~
-deactivate
-~~~
-### Windows
-Instalación de gestor de ambientes virtuales de Python
-~~~
-pip install virtualenv
-~~~
-Creación del ambiente virtual
-~~~
-py -m venv .venv
-~~~
-Activación del ambiente virtual para CMD
-~~~
+Vistas API (ViewSets)
+
+class DirectorViewSet(viewsets.ModelViewSet):
+    queryset = Director.objects.all()
+    serializer_class = DirectorSerializer
+    permission_classes = [IsAuthenticated]
+
+class PeliculaViewSet(viewsets.ModelViewSet):
+    queryset = Pelicula.objects.all()
+    serializer_class = PeliculaSerializer
+    permission_classes = [IsAuthenticated]
+
+
+Rutas (urls.py)
+
+router = DefaultRouter()
+router.register(r'directores', DirectorViewSet)
+router.register(r'peliculas', PeliculaViewSet)
+
+urlpatterns = [
+    path('api/', include(router.urls)),
+    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+]
+
+
+Protección con OAuth 2.0
+
+Se valida el token en cada request
+
+Endpoints públicos limitados (opcional)
+
+💻 Requisitos del Frontend (React)
+
+Autenticación
+
+Login mediante OAuth 2.0
+
+Almacenar token en localStorage o sessionStorage
+
+Enviar token en cabecera de cada request (Authorization: Bearer <token>)
+
+Consumo de API
+
+Listado de películas y directores
+
+Crear, editar y eliminar registros
+
+Manejo de errores y estado de carga (loading)
+
+Componentes principales
+
+Login.jsx → formulario de login OAuth
+
+PeliculasList.jsx → lista de películas con cards verticales
+
+DirectoresList.jsx → lista de directores
+
+Navbar.jsx → barra de navegación con botones “Todos / Películas / Directores”
+
+Estilos
+
+Fondo oscuro tipo Netflix (#141414)
+
+Cards verticales con imagen arriba, título, descripción y botones
+
+Botones y texto con colores contrastantes (blanco, rojo #e50914)
+
+Responsive usando Bootstrap Grid
+
+⚙️ Instalación y Ejecución
+Backend
+# Crear entorno virtual
+python -m venv .venv
+# Activar entorno
+# Windows
 .venv\Scripts\activate
-~~~
-Activación del ambiente virtual para PowerShell
-~~~
-.venv\Scripts\activate.ps1
-~~~
-Instalación de dependencias de este proyecto
-~~~
+# Linux / Mac
+source .venv/bin/activate
+
+# Instalar dependencias
 pip install -r requirements.txt
-~~~
-En caso de querer desactivar el ambiente usar
-~~~
-deactivate
-~~~
 
-## Comandos útiles
-
-### Iniciar servidor
-#### Linux o MaCOS
-~~~
-python3 manage.py runserver
-~~~
-#### Windows
-~~~
-python manage.py runserver
-~~~
-
-Una vez inicializado el servidor se deberá dirigir al siguiente enlace: <http://localhost:8000>
-
-### Crear nueva aplicación
-#### Linux o MaCOS
-~~~
-python3 manage.py startapp <nombre_de_la_aplicacion>
-~~~
-#### Windows
-~~~
-python manage.py startapp <nombre_de_la_aplicacion>
-~~~
-
-### Crear Súper Usuario
-#### Linux o MaCOS
-~~~
-python3 manage.py createsuperuser
-~~~
-#### Windows
-~~~
-python manage.py createsuperuser
-~~~
-
-### Generar archivos de migración
-#### Linux o MaCOS
-~~~
-python3 manage.py makemigrations
-~~~
-#### Windows
-~~~
+# Migrar base de datos
 python manage.py makemigrations
-~~~
-
-### Migrar a bases de datos
-#### Linux o MaCOS
-~~~
-python3 manage.py migrate
-~~~
-#### Windows
-~~~
 python manage.py migrate
-~~~
 
-### Almacenar dependencias y librerías instaladas
-#### Linux o MaCOS
-~~~
-pip3 freeze > requirements.txt
-~~~
-#### Windows
-~~~
-pip freeze > requirements.txt
-~~~
+# Crear superusuario
+python manage.py createsuperuser
 
-# Nota
-Para los siguientes pasos se deberán seguir las **instrucciones del docente en clase**. No olvides que puedes contactarlo a <paperez@puce.edu.ec>
+# Iniciar servidor
+python manage.py runserver
 
+Frontend
+# Crear proyecto React con Vite (si no existe)
+npm create vite@latest catflix-frontend
 
-# Ejemplos de Cadenas de Conexión para Django
+# Instalar dependencias
+npm install axios bootstrap react-router-dom
 
-### PostgreSQL
-
-- Instalar pyscopg2
-    ```bash
-    pip3 install psycopg2
-    ```
-- Configurar archivo settings.py
-    ```python
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'nombre_de_tu_base_de_datos',
-            'USER': 'tu_usuario',
-            'PASSWORD': 'tu_contraseña',
-            'HOST': 'localhost',
-            'PORT': '5432',
-        }
-    }
-    ```
-### MySQL
-- Instalar mysqlclient
-    ```bash
-    pip3 install mysqlclient
-    ```
-- Configurar archivo settings.py
-    ```python
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'nombre_de_tu_base_de_datos',
-            'USER': 'tu_usuario',
-            'PASSWORD': 'tu_contraseña',
-            'HOST': 'localhost',
-            'PORT': '3306',
-        }
-    }
-    ```
-
-### SQLite
-- Configurar archivo settings.py
-    ```python
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-    ```
-
-### Oracle
-
-- Instalar cx_Oracle
-    ```bash
-    pip3 install cx_Oracle
-    ```
-- Configurar archivo settings.py
-    ```python
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.oracle',
-            'NAME': 'nombre_de_tu_base_de_datos',
-            'USER': 'tu_usuario',
-            'PASSWORD': 'tu_contraseña',
-            'HOST': 'localhost',
-            'PORT': '1521',
-        }
-    }
-    ```
-
-### SQL Server (usando django-mssql-backend)
-
-- Instalar cx_Oracle
-    ```bash
-    pip3 install django-mssql-backend
-    ```
-- Configurar archivo settings.py
-    ```python
-    DATABASES = {
-        'default': {
-            'ENGINE': 'sql_server.pyodbc',
-            'NAME': 'nombre_de_tu_base_de_datos',
-            'USER': 'tu_usuario',
-            'PASSWORD': 'tu_contraseña',
-            'HOST': 'localhost',
-            'PORT': '1433',
-            'OPTIONS': {
-                'driver': 'ODBC Driver 17 for SQL Server',
-            },
-        }
-    }
-    ```
+# Ejecutar
+npm run dev
