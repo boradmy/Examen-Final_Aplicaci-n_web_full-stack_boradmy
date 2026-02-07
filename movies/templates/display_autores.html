@@ -1,49 +1,48 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>{{ autor.name }}</h2>
+<h3>Formulario de Autor</h3>
 
-  <p><strong>Edad:</strong> {{ autor.age }}</p>
-  <p><strong>Ciudad:</strong> {{ autor.city }}</p>
-  <p><strong>Especialidad:</strong> {{ autor.specialty }}</p>
+<ul class="list-group">
+    <li class="list-group-item"><strong>ID:</strong> {{ autor.id }}</li>
+    <li class="list-group-item"><strong>Nombre:</strong> {{ autor.nombre|capfirst }}</li>
+    <li class="list-group-item"><strong>Nacionalidad:</strong> {{ autor.nacionalidad|capfirst }}</li>
 
-  {% if autor.picture %}
-    <img
-      src="{{ autor.picture.url }}"
-      alt="Imagen de {{ autor.name }}"
-      class="img-fluid mb-3"
-    >
-  {% endif %}
-
-  <h3>Películas del autor</h3>
-  <ul class="list-unstyled">
-    {% for pelicula in autor.pokemons.all %}
-      <li class="mb-2">
-        <strong>{{ pelicula.name }}</strong> ({{ pelicula.type }})
-        {% if pelicula.picture %}
-          <img
-            src="{{ pelicula.picture.url }}"
-            alt="{{ pelicula.name }}"
-            style="height:50px; margin-left:10px;"
-          >
+    <li class="list-group-item">
+        <strong>Picture:</strong><br>
+        {% if autor.picture %}
+            <img src="{{ autor.picture.url }}" alt="{{ autor.nombre }}" class="img-thumbnail" style="max-height: 200px;">
+        {% else %}
+            No hay imagen disponible
         {% endif %}
-      </li>
-    {% empty %}
-      <li>No tiene películas asignadas.</li>
-    {% endfor %}
-  </ul>
+    </li>
+</ul>
 
-  <div class="mt-3">
-    <a href="{% url 'movies:edit_autor' autor.id %}" class="btn btn-warning">
-      <i class="fa-solid fa-pen-to-square"></i> Editar
+<h3 class="mt-4">Películas del autor</h3>
+<ul class="list-unstyled">
+    {% for pelicula in autor.pelicula_set.all %}
+        <li class="mb-2">
+            <strong>{{ pelicula.titulo }}</strong> ({{ pelicula.genero|capfirst }})
+            {% if pelicula.picture %}
+                <img src="{{ pelicula.picture.url }}" alt="{{ pelicula.titulo }}" style="height:50px; margin-left:10px;">
+            {% endif %}
+        </li>
+    {% empty %}
+        <li>No tiene películas asignadas.</li>
+    {% endfor %}
+</ul>
+
+<div class="mt-3">
+    <a href="{% url 'movies:edit_director' autor.id %}" class="btn btn-warning">
+        <i class="fa-solid fa-pen-to-square"></i> Editar
     </a>
 
-    <a href="{% url 'movies:delete_autor' autor.id %}" class="btn btn-danger">
-      <i class="fa-solid fa-trash"></i> Eliminar
+    <a href="{% url 'movies:delete_director' autor.id %}" class="btn btn-danger">
+        <i class="fa-solid fa-trash"></i> Eliminar
     </a>
 
     <a href="{% url 'movies:index' %}" class="btn btn-secondary">
-      <i class="fa-solid fa-arrow-left"></i> Volver
+        <i class="fa-solid fa-arrow-left"></i> Volver
     </a>
-  </div>
-{% endblock %}
+</div>
+{% endblock content %}

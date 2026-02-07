@@ -1,18 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <p>
-    Has elegido la película:
-    <strong>{{ pelicula.name|capfirst }}</strong>
-  </p>
+<h3>Formulario de Película</h3>
 
-  <h3>Detalles de la película</h3>
+<ul class="list-group">
+    <li class="list-group-item"><strong>ID:</strong> {{ pelicula.id }}</li>
+    <li class="list-group-item"><strong>Título:</strong> {{ pelicula.titulo|capfirst }}</li>
+    <li class="list-group-item"><strong>Género:</strong> {{ pelicula.genero|capfirst }}</li>
+    <li class="list-group-item"><strong>Año:</strong> {{ pelicula.anio }}</li>
+    <li class="list-group-item">
+        <strong>Picture:</strong>
+        {% if pelicula.picture %}
+            <img src="{{ pelicula.picture.url }}" alt="{{ pelicula.titulo }}" class="img-thumbnail" style="max-height: 200px;">
+        {% else %}
+            No hay imagen disponible
+        {% endif %}
+    </li>
+    <li class="list-group-item"><strong>Director:</strong> {{ pelicula.director.nombre }}</li>
+</ul>
 
-  <ul>
-    <li><strong>ID:</strong> {{ pelicula.id }}</li>
-    <li><strong>Título:</strong> {{ pelicula.name|capfirst }}</li>
-    <li><strong>Género:</strong> {{ pelicula.type|capfirst }}</li>
-    <li><strong>Duración:</strong> {{ pelicula.weight }}</li>
-    <li><strong>Año:</strong> {{ pelicula.height }}</li>
-  </ul>
+<a href="{% url 'movies:index' %}" class="btn btn-primary mt-3">Volver al inicio</a>
 {% endblock content %}
