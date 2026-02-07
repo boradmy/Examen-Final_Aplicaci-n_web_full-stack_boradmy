@@ -1,18 +1,18 @@
 from django.contrib import admin
-from .models import Pokemon, EntrenadorPokemon
+from .models import Pelicula, Director
 
 
-@admin.register(Pokemon)
+@admin.register(Pelicula)
 class PeliculaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'type', 'weight', 'height')
-    search_fields = ('name', 'type')
-    list_filter = ('type',)
-    ordering = ('name',)
+    list_display = ('id', 'titulo', 'genero', 'anio')
+    search_fields = ('titulo', 'genero')
+    list_filter = ('genero', 'anio')
+    ordering = ('titulo',)
 
 
-@admin.register(EntrenadorPokemon)
-class AutorAdmin(admin.ModelAdmin):
-    list_display = ('name', 'age', 'city', 'specialty')
-    search_fields = ('name', 'city', 'specialty')
-    list_filter = ('city', 'specialty')
-    ordering = ('name',)
+@admin.register(Director)
+class DirectorAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nombre', 'nacionalidad')
+    search_fields = ('nombre', 'nacionalidad')
+    list_filter = ('nacionalidad',)
+    ordering = ('nombre',)

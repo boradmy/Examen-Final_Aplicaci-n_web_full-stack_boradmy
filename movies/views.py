@@ -1,97 +1,123 @@
-from django.http import HttpResponse
-from django.template import loader
-from .models import Pokemon, EntrenadorPokemon   # ← usa el nombre actualizado del modelo
-from movies.forms import PokemonForm, EntrenadorPokemonForm
-from django.shortcuts import redirect, render
-from django.contrib.auth.views import LoginView
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView, LogoutView
+from django.shortcuts import get_object_or_404, redirect, render
+
+from .models import Pelicula, Director
+from .forms import PeliculaForm, DirectorForm
 
 
+# ---------- Vistas principales ----------
 def index(request):
-    pokemons = Pokemon.objects.all()
-    entrenadores = EntrenadorPokemon.objects.all()
-    template = loader.get_template('index.html')
-    return HttpResponse(template.render({'pokemons': pokemons, 'entrenadores': entrenadores}, request))
+    """
+    Página principal:
+      - Lista de Películas
+      - Lista de Directores
+    """
+    peliculas = Pelicula.objects.all().order_by('titulo')
+    directores = Director.objects.all().order_by('nombre')
+    return render(request, 'index.html', {
+        'peliculas': peliculas,
+        'directores': directores,
+    })
 
 
-def pokemon(request, pokemon_id):
-    pokemon = Pokemon.objects.get(id=pokemon_id)
-    template = loader.get_template('display_pokemon.html')
-    context = {'pokemon': pokemon}
-    return HttpResponse(template.render(context, request))
+def pelicula(request, id):
+    """
+    Detalle de una película
+    """
+    pelicula = get_object_or_404(Pelicula, id=id)
+    return render(request, 'display_peliculas.html', {
+        'pelicula': pelicula
+    })
 
 
-def entrenador(request, entrenador_id):
-    entrenador = EntrenadorPokemon.objects.get(id=entrenador_id)
-    template = loader.get_template('display_entrenador.html')
-    context = {'entrenador': entrenador}
-    return HttpResponse(template.render(context, request))
+def director(request, id):
+    """
+    Detalle de un director
+    """
+    director = get_object_or_404(Director, id=id)
+    return render(request, 'display_autores.html', {
+        'director': director
+    })
 
 
+# ---------- Películas (CRUD) ----------
 @login_required
-def add_pokemon(request):
+def add_pelicula(request):
     if request.method == "POST":
-        form = PokemonForm(request.POST, request.FILES)
+        form = PeliculaForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('pokedex:index')
+            messages.success(request, "Película creada correctamente.")
+            return redirect('movies:index')
     else:
-        form = PokemonForm()
-    return render(request, 'pokemon_form.html', {'form': form})
+        form = PeliculaForm()
+    return render(request, 'peliculas_form.html', {'form': form})
 
 
 @login_required
-def edit_pokemon(request, pokemon_id):
-    pokemon = Pokemon.objects.get(id=pokemon_id)
+def edit_pelicula(request, id):
+    pelicula = get_object_or_404(Pelicula, id=id)
     if request.method == "POST":
-        form = PokemonForm(request.POST, request.FILES, instance=pokemon)
+        form = PeliculaForm(request.POST, request.FILES, instance=pelicula)
         if form.is_valid():
             form.save()
-            return redirect('pokedex:index')
+            messages.success(request, "Película actualizada correctamente.")
+            return redirect('movies:index')
     else:
-        form = PokemonForm(instance=pokemon)
-    return render(request, 'pokemon_form.html', {'form': form})
+        form = PeliculaForm(instance=pelicula)
+    return render(request, 'peliculas_form.html', {'form': form})
 
 
 @login_required
-def delete_pokemon(request, pokemon_id):
-    pokemon = Pokemon.objects.get(id=pokemon_id)
-    pokemon.delete()
-    return redirect('pokedex:index')
+def delete_pelicula(request, id):
+    pelicula = get_object_or_404(Pelicula, id=id)
+    pelicula.delete()
+    messages.success(request, "Película eliminada correctamente.")
+    return redirect('movies:index')
 
 
-# 🔥 NUEVAS VISTAS PARA ENTRENADORES
+# ---------- Directores (CRUD) ----------
 @login_required
-def add_entrenador(request):
+def add_director(request):
     if request.method == "POST":
-        form = EntrenadorPokemonForm(request.POST, request.FILES)
+        form = DirectorForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('pokedex:index')
+            messages.success(request, "Director creado correctamente.")
+            return redirect('movies:index')
     else:
-        form = EntrenadorPokemonForm()
-    return render(request, 'trainer_form.html', {'form': form})
+        form = DirectorForm()
+    return render(request, 'autores_form.html', {'form': form})
 
 
 @login_required
-def edit_entrenador(request, entrenador_id):
-    entrenador = EntrenadorPokemon.objects.get(id=entrenador_id)
+def edit_director(request, id):
+    director = get_object_or_404(Director, id=id)
     if request.method == "POST":
-        form = EntrenadorPokemonForm(request.POST, request.FILES, instance=entrenador)
+        form = DirectorForm(request.POST, request.FILES, instance=director)
         if form.is_valid():
             form.save()
-            return redirect('pokedex:index')
+            messages.success(request, "Director actualizado correctamente.")
+            return redirect('movies:index')
     else:
-        form = EntrenadorPokemonForm(instance=entrenador)
-    return render(request, 'trainer_form.html', {'form': form})
+        form = DirectorForm(instance=director)
+    return render(request, 'autores_form.html', {'form': form})
 
 
 @login_required
-def delete_entrenador(request, entrenador_id):
-    entrenador = EntrenadorPokemon.objects.get(id=entrenador_id)
-    entrenador.delete()
-    return redirect('pokedex:index')
+def delete_director(request, id):
+    director = get_object_or_404(Director, id=id)
+    director.delete()
+    messages.success(request, "Director eliminado correctamente.")
+    return redirect('movies:index')
 
 
+# ---------- Login / Logout ----------
 class CustomLoginView(LoginView):
     template_name = 'login_form.html'
+
+
+class CustomLogoutView(LogoutView):
+    next_page = 'movies:index'

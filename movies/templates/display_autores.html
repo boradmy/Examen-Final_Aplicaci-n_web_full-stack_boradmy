@@ -15,21 +15,21 @@
     >
   {% endif %}
 
-  <h3>Obras del autor</h3>
+  <h3>Películas del autor</h3>
   <ul class="list-unstyled">
-    {% for pokemon in autor.pokemons.all %}
+    {% for pelicula in autor.pokemons.all %}
       <li class="mb-2">
-        <strong>{{ pokemon.name }}</strong> ({{ pokemon.type }})
-        {% if pokemon.picture %}
+        <strong>{{ pelicula.name }}</strong> ({{ pelicula.type }})
+        {% if pelicula.picture %}
           <img
-            src="{{ pokemon.picture.url }}"
-            alt="{{ pokemon.name }}"
+            src="{{ pelicula.picture.url }}"
+            alt="{{ pelicula.name }}"
             style="height:50px; margin-left:10px;"
           >
         {% endif %}
       </li>
     {% empty %}
-      <li>No tiene obras asignadas.</li>
+      <li>No tiene películas asignadas.</li>
     {% endfor %}
   </ul>
 
