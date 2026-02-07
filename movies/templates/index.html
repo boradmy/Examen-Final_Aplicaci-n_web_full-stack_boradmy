@@ -12,10 +12,10 @@
     <div class="col-12 col-md-6 col-lg-3 p-1">
         <div class="card h-100" style="width: 15rem;">
             {% if pelicula.picture %}
-                <img src="{{ pelicula.picture.url }}" class="card-img-top" alt="{{ pelicula.name }}">
+                <img src="{{ pelicula.picture.url }}" class="card-img-top" alt="{{ pelicula.titulo }}">
             {% endif %}
             <div class="card-body">
-                <h5 class="card-title">{{ pelicula.name }}</h5>
+                <h5 class="card-title">{{ pelicula.titulo }}</h5>
                 <p class="card-text">Género: {{ pelicula.type }}</p>
 
                 <a href="{% url 'movies:pelicula' pelicula.id %}" class="btn btn-primary btn-sm">
@@ -35,31 +35,31 @@
 
 <hr>
 
-<h3>Lista de Autores</h3>
-<a href="{% url 'movies:add_autor' %}" class="btn btn-success mb-3">
-    Añadir Autor
+<h3>Lista de Directores</h3>
+<a href="{% url 'movies:add_director' %}" class="btn btn-success mb-3">
+    Añadir Director
 </a>
 
 <div class="row">
-    {% for autor in autores %}
+    {% for director in directores %}
     <div class="col-12 col-md-6 col-lg-3 p-1">
         <div class="card h-100" style="width: 15rem;">
-            {% if autor.picture %}
-                <img src="{{ autor.picture.url }}" class="card-img-top" alt="{{ autor.name }}">
+            {% if director.picture %}
+                <img src="{{ director.picture.url }}" class="card-img-top" alt="{{ director.nombre }}">
             {% endif %}
             <div class="card-body">
-                <h5 class="card-title">{{ autor.name }}</h5>
-                <p class="card-text">Edad: {{ autor.age }}</p>
-                <p class="card-text">Ciudad: {{ autor.city }}</p>
-                <p class="card-text">Especialidad: {{ autor.specialty }}</p>
+                <h5 class="card-title">{{ director.nombre }}</h5>
+                <p class="card-text">Edad: {{ director.age }}</p>
+                <p class="card-text">Ciudad: {{ director.city }}</p>
+                <p class="card-text">Especialidad: {{ director.specialty }}</p>
 
-                <a href="{% url 'movies:autor' autor.id %}" class="btn btn-primary btn-sm">
+                <a href="{% url 'movies:director' director.id %}" class="btn btn-primary btn-sm">
                     <i class="fa-solid fa-eye"></i> Ver
                 </a>
-                <a href="{% url 'movies:edit_autor' autor.id %}" class="btn btn-warning btn-sm">
+                <a href="{% url 'movies:edit_director' director.id %}" class="btn btn-warning btn-sm">
                     <i class="fa-solid fa-pen-to-square"></i> Editar
                 </a>
-                <a href="{% url 'movies:delete_autor' autor.id %}" class="btn btn-danger btn-sm">
+                <a href="{% url 'movies:delete_director' director.id %}" class="btn btn-danger btn-sm">
                     <i class="fa-solid fa-trash"></i> Eliminar
                 </a>
             </div>
