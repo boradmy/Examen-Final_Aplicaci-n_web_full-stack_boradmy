@@ -5,7 +5,7 @@ Nombre: Boris Adrián Murillo Yajamín
 
 Carrera: Ingeniería en Desarrollo de Software
 
-🎯 Objetivo
+// Objetivo
 
 Desarrollar una aplicación web full-stack para manejar catálogos de películas y directores, integrando:
 
@@ -17,13 +17,13 @@ Autenticación mediante OAuth 2.0
 
 El proyecto busca demostrar la integración de tecnologías aprendidas durante el curso y la capacidad de crear una aplicación funcional y segura.
 
-👥 Modalidad
+// Modalidad
 
 Trabajo individual o en parejas (2 personas)
 
 Reutilización de proyectos anteriores permitida solo si se adapta a los requisitos y se evidencia aplicación de los contenidos aprendidos.
 
-🛠️ Tecnologías utilizadas
+// Tecnologías utilizadas
 Parte	Tecnología
 Backend	Django + Django REST Framework
 Autenticación	OAuth 2.0 (Django OAuth Toolkit)
@@ -32,7 +32,8 @@ UI	Bootstrap 5
 Base de datos	SQLite (desarrollo) / PostgreSQL (producción)
 Control de versiones	Git / GitHub
 Deployment	Local / Opcional: Heroku o Render
-📚 Descripción del Proyecto
+
+// Descripción del Proyecto
 
 Aplicación para manejar películas y directores
 
@@ -46,7 +47,7 @@ Crear, editar y eliminar películas y directores
 
 Autenticación y autorización de usuarios mediante OAuth 2.0
 
-🔌 Requisitos del Backend (Django)
+// Requisitos del Backend (Django)
 
 API REST:
 
