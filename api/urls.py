@@ -3,6 +3,6 @@ from .views import PeliculaViewSet, DirectorViewSet
 
 router = DefaultRouter()
 router.register(r'peliculas', PeliculaViewSet)
-router.register(r'directores', DirectorViewSet)   # ✅ nuevo
+router.register(r'directores', DirectorViewSet)
 
 urlpatterns = router.urls
