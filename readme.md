@@ -1,3 +1,6 @@
+VIDEO EXPLICATIVO:
+https://youtu.be/t0OVXONUbdE 
+
 Proyecto Final: CatFlix Web Full-Stack
 Datos del estudiante
 
